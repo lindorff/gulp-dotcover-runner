@@ -1,0 +1,30 @@
+{
+  "name": "gulp-dotcover-runner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "files": [
+    "index.js",
+  ],
+  "dependencies": {
+    "event-stream": "^3.3.4",
+    "gulp-util": "^3.0.8",
+    "lodash": "^4.17.4",
+    "temp": "^0.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lindorff/gulp-dotcover-runner.git"
+  },
+  "keywords": [
+    "gulp",
+    "dotcover",
+    ".net",
+    "gulpplugin"
+  ],
+  "author": "Andy Davies <andrew.davies@lindorff.com>",
+  "bugs": {
+    "url": "https://github.com/lindorff/gulp-dotcover-runner/issues"
+  },
+  "homepage": "https://github.com/lindorff/gulp-dotcover-runner",
+}
