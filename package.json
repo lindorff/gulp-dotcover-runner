@@ -5,6 +5,7 @@
   "main": "index.js",
   "files": [
     "index.js",
+    "LICENSE"
   ],
   "dependencies": {
     "event-stream": "^3.3.4",
@@ -23,6 +24,7 @@
     "gulpplugin"
   ],
   "author": "Andy Davies <andrew.davies@lindorff.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/lindorff/gulp-dotcover-runner/issues"
   },
