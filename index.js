@@ -67,7 +67,7 @@ runner.getArguments = function(options, assemblies) {
     args.push("cover")
     args.push("/TargetExecutable=" + options.target.executable);
     args.push("/TargetWorkingDir=" + options.target.workingDirectory);
-    args.push("/TargetArguments=" + assemblyArgs);
+    args.push("/TargetArguments=" + assemblyArgs.join(" "));
     args.push("/output=" + options.target.output);
 
     return args;
