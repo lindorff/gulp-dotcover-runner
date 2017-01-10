@@ -9,7 +9,7 @@ var _ = require('lodash'),
     fs = require('fs');
 
 var PLUGIN_NAME = 'gulp.dotcover.runner';
-var CONSOLE = 'dotCover.exe'
+var EXECUTABLE_NAME = 'dotCover.exe'
 
 var runner = function gulpDotcoverRunner(opts) {
 
@@ -33,13 +33,13 @@ var runner = function gulpDotcoverRunner(opts) {
 
 runner.getExecutable = function(options) {
     if (!options.executable)
-        return CONSOLE;
+        return EXECUTABLE_NAME;
 
     // trim any existing surrounding quotes and then wrap in ""
     var executable = trim(options.executable, '\\s', '"', "'");
 
     return !path.extname(options.executable)
-        ? path.join(executable, CONSOLE)
+        ? path.join(executable, EXECUTABLE_NAME)
         : executable;
 }
 
