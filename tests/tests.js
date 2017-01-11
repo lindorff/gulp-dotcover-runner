@@ -102,6 +102,46 @@ var path = require('path');
             });
         });
 
+        describe('testing dotcover target arguments option', function() {
+
+            it('should return empty when there are no assemblies', function() {
+                var assemblies = [];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments=');
+            });
+
+            it('should include a single assembly when there is only one provided', function() {
+                var assemblies = [ "bin/debug/some.tests.dll" ];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments=bin/debug/some.tests.dll');
+            });
+
+            it('should not quote a non-quoted path with no spaces', function() {
+                var assemblies = [ "bin/debug/some.tests.dll" ];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+            });
+
+            it('should unquote a double quoted path with no spaces', function() {
+                var assemblies = [ '"bin/debug/some.tests.dll"' ];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+            });
+
+            it('should unquote a single quoted path with no spaces', function() {
+                var assemblies = [ "'bin/debug/some.tests.dll'" ];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+            });
+
+            it('should not unquote a single quoted path with spaces', function() {
+                var assemblies = [ "'bin/debug prod/some.tests.dll'" ];
+
+                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments="bin/debug prod/some.tests.dll"');
+            });
+
+        });
+
     });
 
 }());

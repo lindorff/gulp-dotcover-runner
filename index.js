@@ -60,9 +60,7 @@ runner.getArguments = function(options, assemblies) {
     options.target = options.target || {};
 
     var assemblyArgs = assemblies.map(function(asm) {
-        var qualifier = asm.trim().indexOf(' ') > -1 ? '"' : '';
-
-        return qualifier + asm + qualifier;
+        return unquotePathsIfNeeded(asm);
     }).reduce(function(p,c) {
         return p.concat(c);
     }, []);
