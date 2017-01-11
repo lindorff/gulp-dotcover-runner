@@ -42,6 +42,10 @@ runner.getExecutable = function(options) {
 };
 
 function unquotePathsIfNeeded(source) {
+
+    if (!source)
+        return;
+
     var args = Array.prototype.slice.call(arguments);
     var replacements = [ '\\s', '"', "'" ].join(',');
     var regex = new RegExp("^[" + replacements + "]+|[" + replacements + "]+$", "g");
@@ -62,7 +66,7 @@ runner.getArguments = function(options, assemblies) {
     var args = [];
 
     args.push("cover");
-    args.push("/TargetExecutable=" + options.target.executable);
+    args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
     args.push("/TargetWorkingDir=" + options.target.workingDirectory);
     args.push("/TargetArguments=" + assemblyArgs.join(" "));
     args.push("/output=" + options.target.output);
