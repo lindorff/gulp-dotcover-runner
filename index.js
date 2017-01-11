@@ -9,7 +9,7 @@ var _ = require('lodash'),
     fs = require('fs');
 
 var PLUGIN_NAME = 'gulp.dotcover.runner';
-var EXECUTABLE_NAME = 'dotCover.exe'
+var EXECUTABLE_NAME = 'dotCover.exe';
 
 var runner = function gulpDotcoverRunner(opts) {
 
@@ -38,40 +38,38 @@ runner.getExecutable = function(options) {
     // trim any existing surrounding quotes and then wrap in ""
     var executable = trim(options.executable, '\\s', '"', "'");
 
-    return !path.extname(options.executable)
-        ? path.join(executable, EXECUTABLE_NAME)
-        : executable;
-}
+    return !path.extname(options.executable) ? path.join(executable, EXECUTABLE_NAME) : executable;
+};
 
 function trim() {
     var args = Array.prototype.slice.call(arguments);
     var source = args[0];
     var replacements = args.slice(1).join(',');
     var regex = new RegExp("^[" + replacements + "]+|[" + replacements + "]+$", "g");
+
     return source.replace(regex, '');
 }
 
 runner.getArguments = function(options, assemblies) {
 
     var assemblyArgs = assemblies.map(function(asm) {
-        var qualifier = asm.trim().indexOf(' ') > -1
-            ? '"'
-            : '';
-        return qualifier + asm + qualifier
+        var qualifier = asm.trim().indexOf(' ') > -1 ? '"' : '';
+
+        return qualifier + asm + qualifier;
     }).reduce(function(p,c) {
         return p.concat(c);
     }, []);
 
     var args = [];
 
-    args.push("cover")
+    args.push("cover");
     args.push("/TargetExecutable=" + options.target.executable);
     args.push("/TargetWorkingDir=" + options.target.workingDirectory);
     args.push("/TargetArguments=" + assemblyArgs.join(" "));
     args.push("/output=" + options.target.output);
 
     return args;
-}
+};
 
 function fail(stream, msg) {
     stream.emit('error', new gutil.PluginError(PLUGIN_NAME, msg));
@@ -99,15 +97,13 @@ function run(stream, files, options) {
         opts);
 
     child.on('error', function (e) {
-        fail(stream, e.code === 'ENOENT'
-            ? 'Unable to find \'' + exe + '\'.'
-            : e.message);
+        fail(stream, e.code === 'ENOENT' ? 'Unable to find \'' + exe + '\'.' : e.message);
     });
 
     child.on('close', function (code) {
 
         if (options.teamcity)
-            gutil.log("##teamcity[importData type='dotNetCoverage' tool='dotcover' path='" + options.target.output + "']")
+            gutil.log("##teamcity[importData type='dotNetCoverage' tool='dotcover' path='" + options.target.output + "']");
 
         if (code !== 0) {
             gutil.log(gutil.colors.red('dotCover failed.'));
