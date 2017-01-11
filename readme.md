@@ -1,5 +1,5 @@
 # gulp-dotcover-runner
-*gulp runner for JetBrains' dotCover.  Work in progress, but does work...*
+gulp runner for JetBrains' dotCover.  Work in progress, but does work...
 
 
 ## Installation
@@ -15,7 +15,8 @@ var gulp = require('gulp'),
     dotcover = require('gulp-dotcover-runner');
 
 gulp.task('test', function () {
-  return gulp.src(['**/*.Test.dll'], {read: false})
+  return gulp
+    .src([ '**/*.Test.dll' ], { read: false })
     .pipe(dotcover({
       executable: "./tools/dotCover/dotCover.exe",
       teamcity: true,
@@ -30,7 +31,8 @@ gulp.task('test', function () {
 
 ## To Do
 
-* [ ] Tests!
+* [x] Tests!
+* [ ] Support target arguments (currently just sending the assembly list)
 * [ ] Support additional dotCover options
   * [x] `TargetExecutable`
   * [x] `TargetArguments`
@@ -48,5 +50,4 @@ gulp.task('test', function () {
   * [ ] `ReturnTargetExitCode`
   * [ ] `ProcessFilters`
   * [ ] `LogFile`
-* [ ] Support target arguments (currently just sending the assembly list)
 * [ ] Improve this readme
