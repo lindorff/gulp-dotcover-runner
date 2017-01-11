@@ -71,7 +71,7 @@ runner.getArguments = function(options, assemblies) {
     args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
     args.push("/TargetWorkingDir=" + unquotePathsIfNeeded(options.target.workingDirectory));
     args.push("/TargetArguments=" + assemblyArgs.join(" "));
-    args.push("/output=" + options.target.output);
+    args.push("/output=" + unquotePathsIfNeeded(options.target.output));
 
     return args;
 };

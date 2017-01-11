@@ -102,6 +102,33 @@ var path = require('path');
             });
         });
 
+        describe('testing dotcover target output option', function() {
+
+            it('should not quote a non-quoted target path with no spaces', function() {
+                var opts = { target: { output: "./build/coverage.xml" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/output=./build/coverage.xml");
+            });
+
+            it('should unquote a double quoted target path with no spaces', function() {
+                var opts = { target: { output: '"./build/coverage.xml"' }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/output=./build/coverage.xml");
+            });
+
+            it('should unquote a single quoted target path with no spaces', function() {
+                var opts = { target: { output: "'./build/coverage.xml'" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/output=./build/coverage.xml");
+            });
+
+            it('should not unquote a single quoted path with spaces', function() {
+                var opts = { target: { output: "'./build etc/coverage.xml'" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include('/output="./build etc/coverage.xml"');
+            });
+        });
+
         describe('testing dotcover target arguments option', function() {
 
             it('should return empty when there are no assemblies', function() {
