@@ -36,15 +36,14 @@ runner.getExecutable = function(options) {
         return EXECUTABLE_NAME;
 
     // trim any existing surrounding quotes and then wrap in ""
-    var executable = trim(options.executable, '\\s', '"', "'");
+    var executable = unquotePathsIfNeeded(options.executable);
 
     return !path.extname(options.executable) ? path.join(executable, EXECUTABLE_NAME) : executable;
 };
 
-function trim() {
+function unquotePathsIfNeeded(source) {
     var args = Array.prototype.slice.call(arguments);
-    var source = args[0];
-    var replacements = args.slice(1).join(',');
+    var replacements = [ '\\s', '"', "'" ].join(',');
     var regex = new RegExp("^[" + replacements + "]+|[" + replacements + "]+$", "g");
 
     return source.replace(regex, '');
