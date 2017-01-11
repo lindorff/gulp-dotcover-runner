@@ -1,11 +1,12 @@
 'use strict';
 
 var gulp = require('gulp'),
-	jshint = require('gulp-jshint'),
-	filter = require('gulp-filter'),
+    jshint = require('gulp-jshint'),
+    filter = require('gulp-filter'),
     mocha = require('gulp-mocha');
 
-var TESTS_PATTERN = 'tests/*.js';
+var TESTS_PATTERN = [ 'tests/*.js' ];
+var WATCH_PATTERN = [ TESTS_PATTERN, 'index.js' ];
 
 gulp.task('default', [ 'test' ]);
 
@@ -25,5 +26,5 @@ gulp.task('test', [ 'lint' ], function() {
 });
 
 gulp.task('watch', function () {
-	gulp.watch(TESTS_PATTERN, [ 'test' ]);
+	gulp.watch(WATCH_PATTERN, [ 'test' ]);
 });
