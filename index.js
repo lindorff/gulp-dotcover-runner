@@ -46,14 +46,18 @@ function unquotePathsIfNeeded(source) {
     if (!source)
         return;
 
-    var args = Array.prototype.slice.call(arguments);
     var replacements = [ '\\s', '"', "'" ].join(',');
     var regex = new RegExp("^[" + replacements + "]+|[" + replacements + "]+$", "g");
 
-    return source.replace(regex, '');
+    var path = source.replace(regex, '');
+    var qualifier = path.trim().indexOf(' ') > -1 ? '"' : '';
+
+    return qualifier + path + qualifier;
 }
 
 runner.getArguments = function(options, assemblies) {
+
+    options.target = options.target || {};
 
     var assemblyArgs = assemblies.map(function(asm) {
         var qualifier = asm.trim().indexOf(' ') > -1 ? '"' : '';
@@ -67,7 +71,7 @@ runner.getArguments = function(options, assemblies) {
 
     args.push("cover");
     args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
-    args.push("/TargetWorkingDir=" + options.target.workingDirectory);
+    args.push("/TargetWorkingDir=" + unquotePathsIfNeeded(options.target.workingDirectory));
     args.push("/TargetArguments=" + assemblyArgs.join(" "));
     args.push("/output=" + options.target.output);
 

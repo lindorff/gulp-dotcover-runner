@@ -7,53 +7,101 @@ var path = require('path');
     var dotcover;
 
     describe('Tests for gulp-dotcover-runner', function() {
+
         beforeEach(function() {
             dotcover = require('../');
         });
 
-        describe('Testing executable names with and without spaces.', function() {
+        describe('Testing executable option', function() {
 
-            it('should not quote a non-quoted executable path with no spaces', function() {
+            it('should not quote a non-quoted path with no spaces', function() {
                 var opts = { executable: "./tools/dotCover/dotCover.exe" };
 
                 expect(dotcover.getExecutable(opts)).to.equal("./tools/dotCover/dotCover.exe");
             });
 
-            it('should unquote a double quoted executable path with no spaces', function() {
+            it('should unquote a double quoted path with no spaces', function() {
                 var opts = { executable: '"./tools/dotCover/dotCover.exe"' };
 
                 expect(dotcover.getExecutable(opts)).to.equal("./tools/dotCover/dotCover.exe");
             });
 
-            it('should unquote a single quoted executable path with no spaces', function() {
+            it('should unquote a single quoted path with no spaces', function() {
                 var opts = { executable: "'./tools/dotCover/dotCover.exe'" };
 
                 expect(dotcover.getExecutable(opts)).to.equal("./tools/dotCover/dotCover.exe");
             });
+
+            it('should not unquote a single quoted path with spaces', function() {
+                var opts = { executable: "'./tools etc/dotCover/dotCover.exe'" };
+
+                expect(dotcover.getExecutable(opts)).to.equal('"./tools etc/dotCover/dotCover.exe"');
+            });
+        });
+
+        describe('testing dotcover options', function() {
 
             it('should call dotcover with "cover" option', function() {
                 var opts = { target: {} };
 
                 expect(dotcover.getArguments(opts, [])).to.include("cover");
             });
+        });
 
-            it('should not quote a non-quoted target executable path with no spaces', function() {
+        describe('testing dotcover target executable option', function() {
+
+            it('should not quote a non-quoted path with no spaces', function() {
                 var opts = { target: { executable: "./tools/xunit/xunit.console.exe" }};
 
                 expect(dotcover.getArguments(opts, [])).to.include("/TargetExecutable=./tools/xunit/xunit.console.exe");
             });
 
-            it('should unquote a double quoted target executable path with no spaces', function() {
+            it('should unquote a double quoted path with no spaces', function() {
                 var opts = { target: { executable: '"./tools/xunit/xunit.console.exe"' }};
 
                 expect(dotcover.getArguments(opts, [])).to.include("/TargetExecutable=./tools/xunit/xunit.console.exe");
             });
 
-            it('should unquote a single quoted target executable path with no spaces', function() {
+            it('should unquote a single quoted path with no spaces', function() {
                 var opts = { target: { executable: "'./tools/xunit/xunit.console.exe'" }};
 
                 expect(dotcover.getArguments(opts, [])).to.include("/TargetExecutable=./tools/xunit/xunit.console.exe");
             });
-        })
+
+            it('should not unquote a single quoted with spaces', function() {
+                var opts = { target: { executable: "'./tools etc/xunit/xunit.console.exe'" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include('/TargetExecutable="./tools etc/xunit/xunit.console.exe"');
+            });
+        });
+
+        describe('testing dotcover target working directory option', function() {
+
+            it('should not quote a non-quoted target path with no spaces', function() {
+                var opts = { target: { workingDirectory: "./tools/xunit" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/TargetWorkingDir=./tools/xunit");
+            });
+
+            it('should unquote a double quoted target path with no spaces', function() {
+                var opts = { target: { workingDirectory: '"./tools/xunit"' }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/TargetWorkingDir=./tools/xunit");
+            });
+
+            it('should unquote a single quoted target path with no spaces', function() {
+                var opts = { target: { workingDirectory: "'./tools/xunit'" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include("/TargetWorkingDir=./tools/xunit");
+            });
+
+            it('should not unquote a single quoted path with spaces', function() {
+                var opts = { target: { workingDirectory: "'./tools etc/xunit'" }};
+
+                expect(dotcover.getArguments(opts, [])).to.include('/TargetWorkingDir="./tools etc/xunit"');
+            });
+        });
+
     });
+
 }());
