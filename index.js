@@ -59,22 +59,47 @@ runner.getArguments = function(options, assemblies) {
 
     options.target = options.target || {};
 
+    var args = [];
+
+    args.push("cover");
+    args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
+    args.push("/TargetWorkingDir=" + unquotePathsIfNeeded(options.target.workingDirectory));
+    args.push("/TargetArguments=" + runner.getTargetArguments(options.target, assemblies));
+    args.push("/output=" + unquotePathsIfNeeded(options.target.output));
+
+    return args;
+};
+
+runner.getTargetArguments = function(target, assemblies) {
+
     var assemblyArgs = assemblies.map(function(asm) {
         return unquotePathsIfNeeded(asm);
     }).reduce(function(p,c) {
         return p.concat(c);
     }, []);
 
-    var args = [];
+    var switches = buildSwitches(target.arguments);
 
-    args.push("cover");
-    args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
-    args.push("/TargetWorkingDir=" + unquotePathsIfNeeded(options.target.workingDirectory));
-    args.push("/TargetArguments=" + assemblyArgs.join(" "));
-    args.push("/output=" + unquotePathsIfNeeded(options.target.output));
-
-    return args;
+    return (assemblyArgs.join(" ") + " " + switches.join(" ")).trim();
 };
+
+function buildSwitches(options) {
+
+    if (!options) {
+        return [];
+    }
+
+    var switches = _.map(options, function (val, key) {
+        if (typeof val === 'boolean') {
+            return val ? '-' + key : '';
+        }
+        if (typeof val === 'string') {
+            return '-' + key + '=' + unquotePathsIfNeeded(val);
+        }
+    });
+
+    return switches;
+}
 
 function fail(stream, msg) {
     stream.emit('error', new gutil.PluginError(PLUGIN_NAME, msg));

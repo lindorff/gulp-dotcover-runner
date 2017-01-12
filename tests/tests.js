@@ -129,42 +129,84 @@ var path = require('path');
             });
         });
 
-        describe('testing dotcover target arguments option', function() {
+        describe('testing dotcover target arguments assemblies', function() {
 
             it('should return empty when there are no assemblies', function() {
                 var assemblies = [];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments=');
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal('');
             });
 
             it('should include a single assembly when there is only one provided', function() {
                 var assemblies = [ "bin/debug/some.tests.dll" ];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments=bin/debug/some.tests.dll');
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal('bin/debug/some.tests.dll');
             });
 
             it('should not quote a non-quoted path with no spaces', function() {
                 var assemblies = [ "bin/debug/some.tests.dll" ];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal("bin/debug/some.tests.dll");
             });
 
             it('should unquote a double quoted path with no spaces', function() {
                 var assemblies = [ '"bin/debug/some.tests.dll"' ];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal("bin/debug/some.tests.dll");
             });
 
             it('should unquote a single quoted path with no spaces', function() {
                 var assemblies = [ "'bin/debug/some.tests.dll'" ];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include("/TargetArguments=bin/debug/some.tests.dll");
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal("bin/debug/some.tests.dll");
             });
 
             it('should not unquote a single quoted path with spaces', function() {
                 var assemblies = [ "'bin/debug prod/some.tests.dll'" ];
 
-                expect(dotcover.getArguments({}, assemblies)).to.include('/TargetArguments="bin/debug prod/some.tests.dll"');
+                expect(dotcover.getTargetArguments({}, assemblies)).to.equal('"bin/debug prod/some.tests.dll"');
+            });
+
+        });
+
+        describe('testing dotcover target arguments option', function() {
+
+            var target = { arguments: { nologo: true, output: "tests.xml" } };
+
+            it('should return empty when there are no assemblies', function() {
+                var assemblies = [];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal('-nologo -output=tests.xml');
+            });
+
+            it('should include a single assembly when there is only one provided', function() {
+                var assemblies = [ "bin/debug/some.tests.dll" ];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal('bin/debug/some.tests.dll -nologo -output=tests.xml');
+            });
+
+            it('should not quote a non-quoted path with no spaces', function() {
+                var assemblies = [ "bin/debug/some.tests.dll" ];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal("bin/debug/some.tests.dll -nologo -output=tests.xml");
+            });
+
+            it('should unquote a double quoted path with no spaces', function() {
+                var assemblies = [ '"bin/debug/some.tests.dll"' ];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal("bin/debug/some.tests.dll -nologo -output=tests.xml");
+            });
+
+            it('should unquote a single quoted path with no spaces', function() {
+                var assemblies = [ "'bin/debug/some.tests.dll'" ];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal("bin/debug/some.tests.dll -nologo -output=tests.xml");
+            });
+
+            it('should not unquote a single quoted path with spaces', function() {
+                var assemblies = [ "'bin/debug prod/some.tests.dll'" ];
+
+                expect(dotcover.getTargetArguments(target, assemblies)).to.equal('"bin/debug prod/some.tests.dll" -nologo -output=tests.xml');
             });
 
         });
