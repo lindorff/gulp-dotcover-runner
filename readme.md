@@ -23,6 +23,10 @@ gulp.task('test', function () {
       target: {
         executable: "./tools/xunit/xunit.console.exe",
         workingDirectory: ".",
+        arguments: {
+          nologo: true,
+          output: "tests.xml",
+        },
         output: "coverage.xml"
       }
     }));
@@ -32,7 +36,7 @@ gulp.task('test', function () {
 ## To Do
 
 * [x] Tests!
-* [ ] Support target arguments (currently just sending the assembly list)
+* [x] Support target arguments (currently just sending the assembly list)
 * [ ] Support additional dotCover options
   * [x] `TargetExecutable`
   * [x] `TargetArguments`
