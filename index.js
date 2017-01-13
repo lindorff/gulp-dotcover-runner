@@ -71,9 +71,25 @@ runner.getArguments = function(options, assemblies) {
     if (attributeFilters)
         args.push("/AttributeFilters=" + attributeFilters);
 
+    var filters = runner.buildsFilters(options);
+
+    if (filters)
+        args.push("/Filters=" + filters);
+
     args.push("/output=" + unquotePathsIfNeeded(options.target.output));
 
     return args;
+};
+
+runner.buildsFilters = function(options) {
+    var inc = options.includeFilter || '';
+    var exc = options.excludeFilter || '';
+
+    if (inc !== '') inc = "+:" + inc;
+
+    if (exc !== '') exc = "-:" + exc;
+
+    return inc + exc;
 };
 
 runner.buildAttributeFilters = function(options) {

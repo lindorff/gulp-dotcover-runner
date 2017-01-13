@@ -27,6 +27,8 @@ gulp.task('test', function () {
           nologo: true,
           output: "tests.xml",
         },
+        includeFilter: "module=*;type=*;function=*;",
+        excludeFilter: "function=*InvestigatoryTest;",
         attributeFilters: [
           "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
           "Lindorff.Testing.ExcludeFromCodeCoverageAttribute"
@@ -50,7 +52,7 @@ gulp.task('test', function () {
   * [ ] `InheritConsole` - not sure if we will expose this at all
   * [ ] `AnalyseTargetArguments`
   * [ ] `Scope`
-  * [ ] `Filters`
+  * [x] `Filters`
   * [x] `AttributeFilters`
   * [ ] `DisableDefaultFilters`
   * [ ] `SymbolSearchPaths`
