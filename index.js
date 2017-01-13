@@ -65,9 +65,24 @@ runner.getArguments = function(options, assemblies) {
     args.push("/TargetExecutable=" + unquotePathsIfNeeded(options.target.executable));
     args.push("/TargetWorkingDir=" + unquotePathsIfNeeded(options.target.workingDirectory));
     args.push("/TargetArguments=" + runner.getTargetArguments(options.target, assemblies));
+
+    var attributeFilters = runner.buildAttributeFilters(options);
+
+    if (attributeFilters)
+        args.push("/AttributeFilters=" + attributeFilters);
+
     args.push("/output=" + unquotePathsIfNeeded(options.target.output));
 
     return args;
+};
+
+runner.buildAttributeFilters = function(options) {
+
+    var filters = options.attributeFilters || [];
+
+    return filters
+        .map(function(val) { return val.trim(); })
+        .join(";");
 };
 
 runner.getTargetArguments = function(target, assemblies) {

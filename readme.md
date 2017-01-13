@@ -27,6 +27,10 @@ gulp.task('test', function () {
           nologo: true,
           output: "tests.xml",
         },
+        attributeFilters: [
+          "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
+          "Lindorff.Testing.ExcludeFromCodeCoverageAttribute"
+        ],
         output: "coverage.xml"
       }
     }));
@@ -47,7 +51,7 @@ gulp.task('test', function () {
   * [ ] `AnalyseTargetArguments`
   * [ ] `Scope`
   * [ ] `Filters`
-  * [ ] `AttributeFilters`
+  * [x] `AttributeFilters`
   * [ ] `DisableDefaultFilters`
   * [ ] `SymbolSearchPaths`
   * [ ] `AllowSymbolServerAccess`

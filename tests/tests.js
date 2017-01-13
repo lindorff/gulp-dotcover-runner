@@ -211,6 +211,47 @@ var path = require('path');
 
         });
 
+        describe('testing dotcover attribute filters option', function() {
+
+            var opts = {};
+
+            it('should not include any filters if none are specified', function() {
+
+                expect(dotcover.getArguments(opts, []).join(" "))
+                    .to.not.include('/AttributeFilters');
+            });
+
+            it('should not include any filters if an empty array is specified', function() {
+
+                opts.attributeFilters = [];
+
+                expect(dotcover.getArguments(opts, []).join(" "))
+                    .to.not.include('/AttributeFilters');
+            });
+
+            it('should include the filter', function() {
+
+                opts.attributeFilters = [
+                    "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"
+                ];
+
+                expect(dotcover.getArguments(opts, []))
+                    .to.include('/AttributeFilters=System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute');
+            });
+
+            it('should include multiple filters', function() {
+
+                opts.attributeFilters = [
+                    "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
+                    "Lindorff.Testing.ExcludeFromCodeCoverageAttribute"
+                ];
+
+                expect(dotcover.getArguments(opts, []))
+                    .to.include('/AttributeFilters=System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute;Lindorff.Testing.ExcludeFromCodeCoverageAttribute');
+            });
+
+        });
+
     });
 
 }());
