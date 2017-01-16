@@ -82,14 +82,21 @@ runner.getArguments = function(options, assemblies) {
 };
 
 runner.buildsFilters = function(options) {
-    var inc = options.includeFilter || '';
-    var exc = options.excludeFilter || '';
 
-    if (inc !== '') inc = "+:" + inc;
+    if (!options.includeFilter && !options.excludeFilter)
+        return;
 
-    if (exc !== '') exc = "-:" + exc;
 
-    return inc + exc;
+    var includes = (options.includeFilter || []).join(";+:");
+    var excludes = (options.excludeFilter || []).join(";-:");
+
+    if (includes)
+        includes = "+:" + includes + ";";
+
+    if (excludes)
+        excludes = "-:" + excludes + ";";
+
+    return includes + excludes;
 };
 
 runner.buildAttributeFilters = function(options) {

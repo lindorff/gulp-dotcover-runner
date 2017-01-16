@@ -256,32 +256,39 @@ var path = require('path');
 
             it('should not include any filters if neither are specified', function() {
 
-                expect(dotcover.getArguments({}, []).join(" "))
-                    .to.not.include('/Filters');
+                expect(dotcover.buildsFilters({})).to.be.undefined;
             });
 
             it('should include the include filter', function() {
-                var opts = { includeFilter: "module=*;type=*;function=*;" };
+                var opts = { includeFilter: [
+                  "module=*",
+                  "type=*",
+                  "function=*"
+                ]};
 
-                expect(dotcover.getArguments(opts, []))
-                    .to.include("/Filters=+:module=*;type=*;function=*;");
+                expect(dotcover.buildsFilters(opts))
+                    .to.equal("+:module=*;+:type=*;+:function=*;");
             });
 
             it('should include the exclude filter', function() {
-                var opts = { excludeFilter: "module=*;type=*;function=*;" };
+              var opts = { excludeFilter: [
+                "module=*",
+                "type=*",
+                "function=*"
+              ]};
 
-                expect(dotcover.getArguments(opts, []))
-                    .to.include("/Filters=-:module=*;type=*;function=*;");
+                expect(dotcover.buildsFilters(opts))
+                    .to.equal("-:module=*;-:type=*;-:function=*;");
             });
 
             it('should include both filters', function() {
                 var opts = {
-                    includeFilter: "module=*;",
-                    excludeFilter: "function=*;"
+                    includeFilter: [ "module=*" ],
+                    excludeFilter: [ "function=*" ]
                 };
 
-                expect(dotcover.getArguments(opts, []))
-                    .to.include("/Filters=+:module=*;-:function=*;");
+                expect(dotcover.buildsFilters(opts))
+                    .to.equal("+:module=*;-:function=*;");
             });
 
         });

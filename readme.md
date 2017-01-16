@@ -27,8 +27,15 @@ gulp.task('test', function () {
           nologo: true,
           output: "tests.xml",
         },
-        includeFilter: "module=*;type=*;function=*;",
-        excludeFilter: "function=*InvestigatoryTest;",
+        includeFilter: [
+          "module=*",
+          "type=*",
+          "function=*"
+        ],
+        excludeFilter: [
+          "Some.Assembly.To.Ignore",
+          "function=*InvestigatoryTest"
+        ],
         attributeFilters: [
           "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
           "Lindorff.Testing.ExcludeFromCodeCoverageAttribute"
