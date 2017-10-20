@@ -134,6 +134,9 @@ function buildSwitches(options) {
         if (typeof val === 'string') {
             return '-' + key + '=' + unquotePathsIfNeeded(val);
         }
+        if(typeof val === 'number') {
+            return '-' + key + '=' + val.toString()
+        }
     });
 
     return switches;
